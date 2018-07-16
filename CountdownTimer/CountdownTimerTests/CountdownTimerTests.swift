@@ -6,7 +6,6 @@
 //  Copyright © 2018년 유금상. All rights reserved.
 //
 
-///*
 // * 특정 시간을 셋팅할 수 있어야 한다.
 // * 시간이 가는 동안 초단위로 표시할 수 있어야 한다.
 // * 시간이 끝나면 끝났다는 것을 표시할 수 있어야 한다.
@@ -25,20 +24,17 @@
 // [] reset (stop)
 // [] setTime (init, reset)
 
-// [] 특정 시간이 지나는 동안 중간 값들을 알 수 있어야 한다.
-// [] 시간은 역순으로 카운트 다운 되어야 한다.
-
-// [] 특정 시간이 끝난 후에 끝났다는 것을 검증할 수 있어야 한다.
-// [] 특정 시간이 아직 지나지 않았다는 것을 검증할 수 있어야 한다.
-
-// [] stop을 하면 실제로 멈춰야 한다.
-// [] reset을 하면 실제로 시간이 초기화 되어야 한다.
-
 // [] setTime 하면 화면에 그 시간이 표시되어야 한다.
 
-// [] stop, start 하면 시간을 이어서 표시한다.
-// [] 시간 출력 형식 00:00:00
+// [] start하면 시간의 변화를 알 수 있어야 한다.
+// [] 시간은 역순으로 카운트 다운 되어야 한다.
 
+// [] stop을 하면 시간의 변화가 멈춰야 한다.
+// [] reset을 하면 남은 시간 표시가 초기화 되어야 한다.
+
+// [] stop, start 하면 시간을 이어서 표시한다.
+
+// [] 시간 출력 형식 00:00:00
 // [X] 시간 입력을 TimeInerval로 변환해야 한다. -> 시간을 입력하면 UIDatePicker가 TimeInterval로 돌려준다.
 
 
@@ -46,7 +42,6 @@ import XCTest
 @testable import CountdownTimer
 
 class CountdownTimerTests: XCTestCase {
-    
     
     func testCountdownTimer() {
 
