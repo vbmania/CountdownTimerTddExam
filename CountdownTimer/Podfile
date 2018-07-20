@@ -13,8 +13,8 @@ target 'CountdownTimer' do
   target 'CountdownTimerTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'Quick', '1.2.0'
-    pod 'Nimble', '7.0.3'
+    pod 'Quick' #, '1.2.0'
+    pod 'Nimble'#, '7.0.3'
   end
 
   target 'CountdownTimerUITests' do
