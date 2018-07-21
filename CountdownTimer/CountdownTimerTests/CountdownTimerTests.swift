@@ -30,9 +30,9 @@
 // [v] 시간은 역순으로 카운트 다운 되어야 한다.
 
 // [v] stop을 하면 시간의 변화가 멈춰야 한다.
-// [] reset을 하면 남은 시간 표시가 초기화 되어야 한다.
+// [v] reset을 하면 남은 시간 표시가 초기화 되어야 한다.
 
-// [] stop, start 하면 시간을 이어서 표시한다.
+// [v] stop, start 하면 시간을 이어서 표시한다.
 
 // [] 시간 출력 형식 00:00:00
 // [X] 시간 입력을 TimeInerval로 변환해야 한다. -> 시간을 입력하면 UIDatePicker가 TimeInterval로 돌려준다.
@@ -45,78 +45,7 @@ import RxCocoa
 
 @testable import CountdownTimer
 
-enum CountdownTimerState {
-    case started
-    case stopped
-    case pending
-}
 
-@objcMembers
-class CountdownTimer: NSObject {
-    
-    var hour: Int = 0
-    var minute: Int = 0
-    var second: Int = 0
-    var totalSeconds: Int = 0
-    var remainSeconds: Int = 0
-    
-    var state: BehaviorRelay<CountdownTimerState> = BehaviorRelay<CountdownTimerState>(value: .pending)
-    let timeChanged: PublishSubject<Int> = PublishSubject<Int>()
-    private let interval: Double
-    private var timer: Disposable?
-    
-    var disposeBag = DisposeBag()
-    
-    init(interval: Double = 1) {
-        self.interval = interval
-        super.init()
-        
-        timeChanged.subscribe(onNext: { [weak self] (remain) in
-            self?.remainSeconds = remain
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    func setTime(hour: Int, minute: Int, second: Int) {
-        if state.value != .pending { return }
-        self.hour = hour
-        self.minute = minute
-        self.second = second
-        
-        totalSeconds = hour * 3600 + minute * 60 + second
-        timeChanged.onNext(totalSeconds)
-    }
-    
-    func start() {
-        if state.value != .started {
-            state.accept(.started)
-            timer?.dispose()
-            
-            let remainSeconds = self.remainSeconds - 1
-            
-            timer = Observable<Int>
-                .interval(RxTimeInterval(interval), scheduler: MainScheduler.instance)
-                .take(remainSeconds + 1)
-                .map {remainSeconds - $0}
-                .bind(to: timeChanged)
-        }
-    }
-    
-    func stop() {
-        if state.value == .started {
-            state.accept(.stopped)
-            timer?.dispose()
-        }
-    }
-    
-    func reset() {
-        if state.value == .stopped {
-            state.accept(.pending)
-            timeChanged.onNext(totalSeconds)
-        }
-    }
-    
-}
 
 class CountdownTimerTests: XCTestCase {
     

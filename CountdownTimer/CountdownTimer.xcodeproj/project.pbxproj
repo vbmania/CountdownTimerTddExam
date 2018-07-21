@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		927BDA4ACBEC77BE6BADF2E1 /* Pods_CountdownTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8ADDC5F34873069B90237C /* Pods_CountdownTimer.framework */; };
+		A506E99A2101D87700C60E0F /* CountdownConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A506E9992101D87700C60E0F /* CountdownConverterTests.swift */; };
+		A5813ECC2102B69400FE053E /* CountdownConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5813ECB2102B69400FE053E /* CountdownConverter.swift */; };
+		A5813ECD2102B69400FE053E /* CountdownConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5813ECB2102B69400FE053E /* CountdownConverter.swift */; };
+		A5813ECF2102B6C300FE053E /* CountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5813ECE2102B6C300FE053E /* CountdownTimer.swift */; };
+		A5813ED02102B6C300FE053E /* CountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5813ECE2102B6C300FE053E /* CountdownTimer.swift */; };
 		A5C62C0F20D67C8C00C30819 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C62C0E20D67C8C00C30819 /* AppDelegate.swift */; };
 		A5C62C1120D67C8C00C30819 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C62C1020D67C8C00C30819 /* ViewController.swift */; };
 		A5C62C1420D67C8C00C30819 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5C62C1220D67C8C00C30819 /* Main.storyboard */; };
@@ -43,6 +48,9 @@
 		795835A51F34A54A723610B1 /* Pods-CountdownTimer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CountdownTimer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CountdownTimer/Pods-CountdownTimer.debug.xcconfig"; sourceTree = "<group>"; };
 		7BE516101BE0BAF1DFE89500 /* Pods_CountdownTimerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CountdownTimerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86CB7E30FD2DFA60A8AD6EAA /* Pods-CountdownTimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CountdownTimerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CountdownTimerTests/Pods-CountdownTimerTests.release.xcconfig"; sourceTree = "<group>"; };
+		A506E9992101D87700C60E0F /* CountdownConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownConverterTests.swift; sourceTree = "<group>"; };
+		A5813ECB2102B69400FE053E /* CountdownConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownConverter.swift; sourceTree = "<group>"; };
+		A5813ECE2102B6C300FE053E /* CountdownTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTimer.swift; sourceTree = "<group>"; };
 		A5C62C0B20D67C8C00C30819 /* CountdownTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountdownTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5C62C0E20D67C8C00C30819 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5C62C1020D67C8C00C30819 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +141,8 @@
 				A5C62C1520D67C9000C30819 /* Assets.xcassets */,
 				A5C62C1720D67C9000C30819 /* LaunchScreen.storyboard */,
 				A5C62C1A20D67C9000C30819 /* Info.plist */,
+				A5813ECB2102B69400FE053E /* CountdownConverter.swift */,
+				A5813ECE2102B6C300FE053E /* CountdownTimer.swift */,
 			);
 			path = CountdownTimer;
 			sourceTree = "<group>";
@@ -141,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				A5C62C2320D67C9000C30819 /* CountdownTimerTests.swift */,
+				A506E9992101D87700C60E0F /* CountdownConverterTests.swift */,
 				A5C62C2520D67C9000C30819 /* Info.plist */,
 			);
 			path = CountdownTimerTests;
@@ -399,6 +410,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5C62C1120D67C8C00C30819 /* ViewController.swift in Sources */,
+				A5813ECF2102B6C300FE053E /* CountdownTimer.swift in Sources */,
+				A5813ECC2102B69400FE053E /* CountdownConverter.swift in Sources */,
 				A5C62C0F20D67C8C00C30819 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,6 +420,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A506E99A2101D87700C60E0F /* CountdownConverterTests.swift in Sources */,
+				A5813ED02102B6C300FE053E /* CountdownTimer.swift in Sources */,
+				A5813ECD2102B69400FE053E /* CountdownConverter.swift in Sources */,
 				A5C62C2420D67C9000C30819 /* CountdownTimerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
