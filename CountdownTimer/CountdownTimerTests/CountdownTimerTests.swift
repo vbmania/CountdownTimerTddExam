@@ -82,5 +82,20 @@ class CountdownTimerTests: XCTestCase {
         expect(underTest.second).to(equal(second))
     }
     
+    func testCanChangeTime() {
+        
+        let underTest = CountdownTimer()
+        let expectedHour = 1
+        let expectedMinute = 1
+        let expectedSecond = 1
+        
+        let changedHour = 3
+        let changedMinute = 2
+        let changedSecond = 2
+        
+        expectTime(underTest: underTest, hour: expectedHour, minute: expectedMinute, second: expectedSecond)
+        expectTime(underTest: underTest, hour: changedHour, minute: changedMinute, second: changedSecond)
+    }
+    
     
 }
