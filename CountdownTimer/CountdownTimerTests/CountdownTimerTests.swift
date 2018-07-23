@@ -20,7 +20,7 @@
 // [v] reset 할 수 있다.
 
 
-// [] setTime이 안되어 있으면 나머지 기능은 쓸 수 없다. 0:0:0 을 말하는 것임.
+// [v] setTime이 안되어 있으면 나머지 기능은 쓸 수 없다. 0:0:0 을 말하는 것임.
 // [] start (reset, stop)
 // [] stop (start)
 // [] reset (stop)
