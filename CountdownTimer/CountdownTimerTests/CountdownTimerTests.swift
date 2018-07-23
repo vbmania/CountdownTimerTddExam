@@ -43,8 +43,9 @@ import XCTest
 
 class CountdownTimerTests: XCTestCase {
     
-    func testCountdownTimer() {
-
+    func testCanSetTime() {
+        let underTest = CountdownTimer()
+        underTest.setTime(hour: 0, minute: 0, second: 0)
     
     }
     
