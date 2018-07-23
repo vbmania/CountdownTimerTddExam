@@ -41,6 +41,10 @@
 import XCTest
 @testable import CountdownTimer
 
+class CountdownTimer {
+    func setTime(hour: Int, minute: Int, second: Int) {}
+}
+
 class CountdownTimerTests: XCTestCase {
     
     func testCanSetTime() {
