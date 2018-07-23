@@ -49,6 +49,7 @@ class CountdownTimer {
     
     var isStarted: Bool = false
     var isStopped: Bool = false
+    var wasReset: Bool = false
     
     func setTime(hour: Int, minute: Int, second: Int) {
         self.hour = hour
@@ -62,6 +63,10 @@ class CountdownTimer {
     
     func stop() {
         isStopped = true
+    }
+    
+    func reset() {
+        wasReset = true
     }
 }
 
@@ -123,9 +128,9 @@ class CountdownTimerTests: XCTestCase {
     
     func testCanReset() {
         let underTest = CountdownTimer()
-        underTest.stop()
+        underTest.reset()
         
-        expect(underTest.isStopped).to(beTrue())
+        expect(underTest.wasReset).to(beTrue())
     }
     
 }
