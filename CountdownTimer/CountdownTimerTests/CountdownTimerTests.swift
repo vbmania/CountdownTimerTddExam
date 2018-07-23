@@ -109,4 +109,11 @@ class CountdownTimerTests: XCTestCase {
         expect(underTest.isStarted).to(beTrue())
     }
     
+    func testCanStop() {
+        let underTest = CountdownTimer()
+        underTest.stop()
+        
+        expect(underTest.isStopped).to(beTrue())
+    }
+    
 }
