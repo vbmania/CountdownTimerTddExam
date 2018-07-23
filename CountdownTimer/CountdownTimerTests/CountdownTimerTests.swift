@@ -50,7 +50,10 @@ class CountdownTimerTests: XCTestCase {
     func testCanSetTime() {
         let underTest = CountdownTimer()
         underTest.setTime(hour: 0, minute: 0, second: 0)
-    
+        
+        expect(underTest.hour).to(equal(0))
+        expect(underTest.minute).to(equal(0))
+        expect(underTest.second).to(equal(0))
     }
     
 }
