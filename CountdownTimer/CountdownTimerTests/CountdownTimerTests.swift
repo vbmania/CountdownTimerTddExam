@@ -55,7 +55,9 @@ class CountdownTimer {
         self.second = second
     }
     
-    func start() {}
+    func start() {
+        isStarted = true
+    }
 }
 
 class CountdownTimerTests: XCTestCase {
