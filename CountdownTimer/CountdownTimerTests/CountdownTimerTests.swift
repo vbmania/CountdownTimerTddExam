@@ -118,6 +118,10 @@ class CountdownTimerTests: XCTestCase {
         let underTest = CountdownTimer()
         underTest.start()
         
+        expect(underTest.isStarted).to(beFalse())
+        
+        underTest.setTime(hour: 0, minute: 0, second: 1)
+        underTest.start()
         expect(underTest.isStarted).to(beTrue())
     }
     
