@@ -138,6 +138,18 @@ class CountdownTimerTests: XCTestCase {
         expect(underTest.isStopped).to(beTrue())
     }
     
+    func testCanStartWhenWasReset() {
+        let underTest = CountdownTimer()
+        underTest.setTime(hour: 0, minute: 0, second: 1)
+        
+        expect(underTest.wasReset).to(beTrue())
+        
+        underTest.start()
+        
+        expect(underTest.isStarted).to(beTrue())
+        expect(underTest.wasReset).to(beTrue())
+    }
+    
     func testCanStop() {
         let underTest = CountdownTimer()
         underTest.stop()
