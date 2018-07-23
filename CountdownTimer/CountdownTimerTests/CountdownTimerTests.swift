@@ -101,6 +101,8 @@ class CountdownTimerTests: XCTestCase {
     func testCanStart() {
         let underTest = CountdownTimer()
         underTest.start()
+        
+        expect(underTest.isStarted).to(beTrue())
     }
     
 }
