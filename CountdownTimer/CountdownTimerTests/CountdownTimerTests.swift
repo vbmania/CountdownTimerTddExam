@@ -47,6 +47,8 @@ class CountdownTimer {
     var minute: Int = 0
     var second: Int = 0
     
+    var isStarted: Bool = false
+    
     func setTime(hour: Int, minute: Int, second: Int) {
         self.hour = hour
         self.minute = minute
