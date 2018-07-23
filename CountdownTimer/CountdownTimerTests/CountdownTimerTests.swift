@@ -62,11 +62,7 @@ class CountdownTimerTests: XCTestCase {
         let expectedMinute = 0
         let expectedSecond = 0
         
-        underTest.setTime(hour: expectedHour, minute: expectedMinute, second: expectedSecond)
-        
-        expect(underTest.hour).to(equal(expectedHour))
-        expect(underTest.minute).to(equal(expectedMinute))
-        expect(underTest.second).to(equal(expectedSecond))
+        expectTime(underTest: underTest, hour: expectedHour, minute: expectedMinute, second: expectedSecond)
     }
     
     func testCanSetTime_1_1_1() {
@@ -75,11 +71,15 @@ class CountdownTimerTests: XCTestCase {
         let expectedMinute = 1
         let expectedSecond = 1
         
-        underTest.setTime(hour: expectedHour, minute: expectedMinute, second: expectedSecond)
+        expectTime(underTest: underTest, hour: expectedHour, minute: expectedMinute, second: expectedSecond)
+    }
+    
+    func expectTime(underTest: CountdownTimer, hour: Int, minute: Int, second: Int) {
+        underTest.setTime(hour: hour, minute: minute, second: second)
         
-        expect(underTest.hour).to(equal(expectedHour))
-        expect(underTest.minute).to(equal(expectedMinute))
-        expect(underTest.second).to(equal(expectedSecond))
+        expect(underTest.hour).to(equal(hour))
+        expect(underTest.minute).to(equal(minute))
+        expect(underTest.second).to(equal(second))
     }
     
     
