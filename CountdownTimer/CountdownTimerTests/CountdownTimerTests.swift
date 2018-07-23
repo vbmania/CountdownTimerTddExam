@@ -17,7 +17,7 @@
 
 // [v] start 할 수 있어야 한다.
 // [v] stop 할 수 있어야 한다.
-// [] reset 할 수 있다.
+// [v] reset 할 수 있다.
 
 // [] start (reset, stop, setTime)
 // [] stop (start)
