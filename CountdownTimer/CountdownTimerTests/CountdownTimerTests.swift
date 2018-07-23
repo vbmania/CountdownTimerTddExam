@@ -83,7 +83,6 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanChangeTime() {
-        
         let underTest = CountdownTimer()
         let expectedHour = 1
         let expectedMinute = 1
@@ -97,5 +96,9 @@ class CountdownTimerTests: XCTestCase {
         expectTime(underTest: underTest, hour: changedHour, minute: changedMinute, second: changedSecond)
     }
     
+    func testCanStart() {
+        let underTest = CountdownTimer()
+        underTest.start()
+    }
     
 }
