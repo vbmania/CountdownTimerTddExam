@@ -39,9 +39,14 @@
 
 
 import XCTest
+import Nimble
 @testable import CountdownTimer
 
 class CountdownTimer {
+    var hour: Int = 0
+    var minute: Int = 0
+    var second: Int = 0
+    
     func setTime(hour: Int, minute: Int, second: Int) {}
 }
 
