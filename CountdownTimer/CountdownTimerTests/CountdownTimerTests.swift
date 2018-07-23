@@ -50,7 +50,7 @@ class CountdownTimer {
     var second: Int = 0
     
     var isStarted: Bool = false
-    var isStopped: Bool = false
+    var isStopped: Bool = true
     var wasReset: Bool = false
     
     func setTime(hour: Int, minute: Int, second: Int) {
