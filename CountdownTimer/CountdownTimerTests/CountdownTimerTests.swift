@@ -47,7 +47,11 @@ class CountdownTimer {
     var minute: Int = 0
     var second: Int = 0
     
-    func setTime(hour: Int, minute: Int, second: Int) {}
+    func setTime(hour: Int, minute: Int, second: Int) {
+        self.hour = hour
+        self.minute = minute
+        self.second = second
+    }
 }
 
 class CountdownTimerTests: XCTestCase {
