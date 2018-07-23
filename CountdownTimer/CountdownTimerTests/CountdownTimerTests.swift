@@ -60,6 +60,7 @@ class CountdownTimer {
     }
     
     func start() {
+        guard hour > 0 || minute > 0 || second > 0 else { return }
         isStarted = true
     }
     
