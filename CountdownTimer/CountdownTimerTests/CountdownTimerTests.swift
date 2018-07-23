@@ -16,7 +16,7 @@
 // [v] 시간을 변경할 수 있어야 한다.
 
 // [v] start 할 수 있어야 한다.
-// [] stop 할 수 있어야 한다.
+// [v] stop 할 수 있어야 한다.
 // [] reset 할 수 있다.
 
 // [] start (reset, stop, setTime)
