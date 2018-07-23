@@ -52,6 +52,8 @@ class CountdownTimer {
         self.minute = minute
         self.second = second
     }
+    
+    func start() {}
 }
 
 class CountdownTimerTests: XCTestCase {
