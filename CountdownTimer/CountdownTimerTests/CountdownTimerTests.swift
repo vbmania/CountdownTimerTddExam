@@ -73,6 +73,7 @@ class CountdownTimer {
     }
     
     func reset() {
+        guard isStopped.value else { return }
         wasReset.accept(true)
     }
 }
@@ -251,7 +252,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.setTime(hour: 0, minute: 0, second: 1)
         
         //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
-        underTest.isStopped
+        underTest.wasReset
             .subscribe(onNext: { started in
                 emitCount = emitCount + 1
             })
