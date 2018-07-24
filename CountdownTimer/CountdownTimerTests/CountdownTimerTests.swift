@@ -61,8 +61,7 @@ class CountdownTimer {
     var state: BehaviorRelay<CountdownTimerState> = BehaviorRelay<CountdownTimerState>(value: .pending)
     
     func setTime(hour: Int, minute: Int, second: Int) {
-//        guard !isStarted.value else { return }
-//        guard !isStopped.value else { return }
+        guard state.value == .pending else { return }
         
         self.hour = hour
         self.minute = minute
@@ -139,7 +138,7 @@ class CountdownTimerTests: XCTestCase {
         let changedMinute = 2
         let changedSecond = 2
 
-        underTest.setTime(hour: 999, minute: 1, second: 1)
+        underTest.setTime(hour: expectedHour, minute: expectedMinute, second: expectedSecond)
         underTest.start()
         underTest.setTime(hour: changedHour, minute: changedMinute, second: changedSecond)
 
@@ -158,7 +157,7 @@ class CountdownTimerTests: XCTestCase {
         let changedMinute = 2
         let changedSecond = 2
 
-        underTest.setTime(hour: 999, minute: 1, second: 1)
+        underTest.setTime(hour: expectedHour, minute: expectedMinute, second: expectedSecond)
         underTest.start()
         underTest.stop()
         underTest.setTime(hour: changedHour, minute: changedMinute, second: changedSecond)
