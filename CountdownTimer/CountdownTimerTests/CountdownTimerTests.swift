@@ -118,13 +118,25 @@ class CountdownTimerTests: XCTestCase {
     
     func testCanStart() {
         let underTest = CountdownTimer()
+        var emitCount: Int = 0
+        
+        
+        //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
+        underTest.isStarted
+            .subscribe(onNext: { started in
+                emitCount = emitCount + 1
+            })
+            .disposed(by: disposeBag)
+        
         underTest.start()
         
-        expect(underTest.isStarted).to(beFalse())
+        
+        expect(underTest.isStarted.value).to(beFalse())
         
         underTest.setTime(hour: 0, minute: 0, second: 1)
         underTest.start()
-        expect(underTest.isStarted).to(beTrue())
+        expect(underTest.isStarted.value).to(beTrue())
+        expect(emitCount).to(equal(2))
     }
     
     func testCanStartWhenStopped() {
@@ -135,7 +147,7 @@ class CountdownTimerTests: XCTestCase {
         
         underTest.start()
         
-        expect(underTest.isStarted).to(beTrue())
+        expect(underTest.isStarted.value).to(beTrue())
         expect(underTest.isStopped).to(beTrue())
     }
     
@@ -147,7 +159,7 @@ class CountdownTimerTests: XCTestCase {
         
         underTest.start()
         
-        expect(underTest.isStarted).to(beTrue())
+        expect(underTest.isStarted.value).to(beTrue())
         expect(underTest.wasReset).to(beTrue())
     }
     
