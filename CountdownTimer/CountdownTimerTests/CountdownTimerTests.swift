@@ -54,7 +54,7 @@ class CountdownTimer {
     
     var isStarted: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: false)
     var isStopped: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: true)
-    var wasReset: Bool = true
+    var wasReset: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: true)
     
     func setTime(hour: Int, minute: Int, second: Int) {
         self.hour = hour
@@ -73,7 +73,7 @@ class CountdownTimer {
     }
     
     func reset() {
-        wasReset = true
+        wasReset.accept(true)
     }
 }
 
@@ -157,12 +157,12 @@ class CountdownTimerTests: XCTestCase {
         let underTest = CountdownTimer()
         underTest.setTime(hour: 0, minute: 0, second: 1)
         
-        expect(underTest.wasReset).to(beTrue())
+        expect(underTest.wasReset.value).to(beTrue())
         
         underTest.start()
         
         expect(underTest.isStarted.value).to(beTrue())
-        expect(underTest.wasReset).to(beTrue())
+        expect(underTest.wasReset.value).to(beTrue())
     }
     
     func testCanStopWhenStarted() {
