@@ -125,7 +125,6 @@ class CountdownTimerTests: XCTestCase {
         let underTest = CountdownTimer()
         var emitCount: Int = 0
         
-        
         //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
         underTest.isStarted
             .subscribe(onNext: { started in
@@ -134,9 +133,7 @@ class CountdownTimerTests: XCTestCase {
             .disposed(by: disposeBag)
         
         underTest.start()
-        
-        
-        expect(underTest.isStarted.value).to(beFalse())
+        expect(underTest.isStarted.value).to(beFalse()) //실제로 start가 발생하지 않은 구간.
         
         underTest.setTime(hour: 0, minute: 0, second: 1)
         underTest.start()
