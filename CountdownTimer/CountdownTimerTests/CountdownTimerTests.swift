@@ -47,11 +47,18 @@ import RxCocoa
 
 @testable import CountdownTimer
 
+enum CountdownTimerState {
+    case pending
+    case started
+    case stopped
+}
+
 class CountdownTimer {
     var hour: Int = 0
     var minute: Int = 0
     var second: Int = 0
     
+    var state: BehaviorRelay<CountdownTimerState> = BehaviorRelay<CountdownTimerState>(value: .pending)
     var isStarted: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: false)
     var isStopped: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: true)
     var wasReset: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: true)
@@ -139,35 +146,35 @@ class CountdownTimerTests: XCTestCase {
 //        let expectedHour = 1
 //        let expectedMinute = 1
 //        let expectedSecond = 1
-//        
+//
 //        let changedHour = 3
 //        let changedMinute = 2
 //        let changedSecond = 2
-//        
+//
 //        underTest.setTime(hour: 999, minute: 1, second: 1)
 //        underTest.start()
 //        underTest.setTime(hour: changedHour, minute: changedMinute, second: changedSecond)
-//        
+//
 //        expect(underTest.hour).to(equal(expectedHour))
 //        expect(underTest.minute).to(equal(expectedMinute))
 //        expect(underTest.second).to(equal(expectedSecond))
 //    }
-//    
+//
 //    func testCanNotChangeTimeWhenStopped() {
 //        let underTest = CountdownTimer()
 //        let expectedHour = 1
 //        let expectedMinute = 1
 //        let expectedSecond = 1
-//        
+//
 //        let changedHour = 3
 //        let changedMinute = 2
 //        let changedSecond = 2
-//        
+//
 //        underTest.setTime(hour: 999, minute: 1, second: 1)
 //        underTest.start()
 //        underTest.stop()
 //        underTest.setTime(hour: changedHour, minute: changedMinute, second: changedSecond)
-//        
+//
 //        expect(underTest.hour).to(equal(expectedHour))
 //        expect(underTest.minute).to(equal(expectedMinute))
 //        expect(underTest.second).to(equal(expectedSecond))
