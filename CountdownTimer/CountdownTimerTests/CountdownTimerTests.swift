@@ -52,7 +52,7 @@ class CountdownTimer {
     var minute: Int = 0
     var second: Int = 0
     
-    var isStarted: Bool = false
+    var isStarted: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: false)
     var isStopped: Bool = true
     var wasReset: Bool = true
     
@@ -64,11 +64,11 @@ class CountdownTimer {
     
     func start() {
         guard hour > 0 || minute > 0 || second > 0 else { return }
-        isStarted = true
+        isStarted.accept(true)
     }
     
     func stop() {
-        guard isStarted else { return }
+        guard isStarted.value else { return }
         isStopped = true
     }
     
