@@ -190,9 +190,28 @@ class CountdownTimerTests: XCTestCase {
     
     func testCanReset() {
         let underTest = CountdownTimer()
-        underTest.reset()
+        var emitCount: Int = 0
         
-        expect(underTest.wasReset).to(beTrue())
+        underTest.setTime(hour: 0, minute: 0, second: 1)
+        
+        //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
+        underTest.isStopped
+            .subscribe(onNext: { started in
+                emitCount = emitCount + 1
+            })
+            .disposed(by: disposeBag)
+        
+        underTest.reset() //reset 그냥 실행
+        
+        underTest.start()
+        underTest.reset() //start 상태에서 reset 실행
+        
+        underTest.stop()
+        underTest.reset() //stop 하고나서 reset 실행
+        
+        expect(underTest.wasReset.value).to(beTrue())
+        expect(emitCount).to(equal(2))
+
     }
     
 }
