@@ -65,11 +65,13 @@ class CountdownTimer {
     func start() {
         guard hour > 0 || minute > 0 || second > 0 else { return }
         isStarted.accept(true)
+        isStopped.accept(false)
     }
     
     func stop() {
         guard isStarted.value else { return }
         isStopped.accept(true)
+        isStarted.accept(false)
     }
     
     func reset() {
