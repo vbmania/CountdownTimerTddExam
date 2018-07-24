@@ -59,7 +59,6 @@ class CountdownTimer {
     var second: Int = 0
     
     var state: BehaviorRelay<CountdownTimerState> = BehaviorRelay<CountdownTimerState>(value: .pending)
-    var isStopped: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: true)
     var wasReset: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: true)
     
     func setTime(hour: Int, minute: Int, second: Int) {
@@ -74,24 +73,21 @@ class CountdownTimer {
     func start() {
         guard hour > 0 || minute > 0 || second > 0 else { return }
         state.accept(.started)
-        isStopped.accept(false)
         wasReset.accept(false)
     }
     
     func stop() {
         guard state.value == .started else { return }
         state.accept(.stopped)
-        isStopped.accept(true)
         wasReset.accept(false)
     }
     
     func reset() {
         guard state.value != .started else { return }
         guard !wasReset.value else { return }
-        guard isStopped.value else { return }
+        guard state.value == .started else { return }
         state.accept(.pending)
         wasReset.accept(true)
-        isStopped.accept(false)
     }
 }
 
