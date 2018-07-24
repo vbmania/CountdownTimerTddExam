@@ -65,6 +65,7 @@ class CountdownTimer {
     }
     
     func stop() {
+        guard isStarted else { return }
         isStopped = true
     }
     
