@@ -21,9 +21,9 @@
 
 
 // [v] setTime이 안되어 있으면 나머지 기능은 쓸 수 없다. 0:0:0 을 말하는 것임.
-// [] start (reset, stop)
-// [] stop (start)
-// [] reset (stop)
+// [v] start (reset, stop)
+// [v] stop (start)
+// [v] reset (stop)
 // [] setTime (init, reset)
 
 // [] setTime 하면 화면에 그 시간이 표시되어야 한다.
@@ -180,8 +180,8 @@ class CountdownTimerTests: XCTestCase {
         
         underTest.stop() //start 없이 stop 실행 - 실행되지 않아야 함.
         
-        
         underTest.start() //setTime 없이 start하여 start가 실행되지 않았고,
+        
         underTest.stop()  //start가 실행되지 않았으니 stop도 실행되지 않음.
         
         expect(underTest.isStopped.value).to(beTrue())
