@@ -66,17 +66,24 @@ class CountdownTimer {
         guard hour > 0 || minute > 0 || second > 0 else { return }
         isStarted.accept(true)
         isStopped.accept(false)
+        wasReset.accept(false)
     }
     
     func stop() {
         guard isStarted.value else { return }
         isStopped.accept(true)
         isStarted.accept(false)
+        wasReset.accept(false)
     }
     
     func reset() {
+        guard !isStarted.value else { return }
+        guard !wasReset.value else { return }
         guard isStopped.value else { return }
+        
         wasReset.accept(true)
+        isStarted.accept(false)
+        isStopped.accept(false)
     }
 }
 
@@ -186,7 +193,7 @@ class CountdownTimerTests: XCTestCase {
         
         //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
         underTest.isStarted
-            .subscribe(onNext: { started in
+            .subscribe(onNext: { _ in
                 emitCount = emitCount + 1
             })
             .disposed(by: disposeBag)
@@ -221,7 +228,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.start()
         
         expect(underTest.isStarted.value).to(beTrue())
-        expect(underTest.wasReset.value).to(beTrue())
+        expect(underTest.wasReset.value).to(beFalse())
     }
     
     func testCanStopWhenStarted() {
@@ -232,7 +239,7 @@ class CountdownTimerTests: XCTestCase {
         
         //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
         underTest.isStopped
-            .subscribe(onNext: { started in
+            .subscribe(onNext: { _ in
                 emitCount = emitCount + 1
             })
             .disposed(by: disposeBag)
@@ -254,19 +261,19 @@ class CountdownTimerTests: XCTestCase {
         underTest.setTime(hour: 0, minute: 0, second: 1)
         
         //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
-        underTest.wasReset
-            .subscribe(onNext: { started in
+        underTest.wasReset.filter { $0 }
+            .subscribe(onNext: { _ in //(emitCount + 1
                 emitCount = emitCount + 1
             })
             .disposed(by: disposeBag)
         
-        underTest.reset() //reset 그냥 실행
+        underTest.reset() //reset 그냥 실행 (x)
         
         underTest.start()
-        underTest.reset() //start 상태에서 reset 실행
+        underTest.reset() //start 상태에서 reset 실행 (x)
         
         underTest.stop()
-        underTest.reset() //stop 하고나서 reset 실행
+        underTest.reset() //stop 하고나서 reset 실행 (o)
         
         expect(underTest.wasReset.value).to(beTrue())
         expect(emitCount).to(equal(2))
