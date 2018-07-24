@@ -24,7 +24,7 @@
 // [v] start (reset, stop)
 // [v] stop (start)
 // [v] reset (stop)
-// [] setTime (init, reset)
+// [v] setTime (init, reset)
 
 // [] setTime 하면 화면에 그 시간이 표시되어야 한다.
 
