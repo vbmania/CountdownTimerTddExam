@@ -202,7 +202,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.setTime(hour: 0, minute: 0, second: 1)
         underTest.start()
         expect(underTest.state.value).to(equal(.started))
-        expect(emitCount).to(equal(1)) //state로 합쳐지면서 초기 값이 없어져서 1번만 실행되는 게 맞음
+        expect(emitCount).to(equal(1))
     }
     
     func testCanStartWhenStopped() {
@@ -235,7 +235,6 @@ class CountdownTimerTests: XCTestCase {
         
         underTest.setTime(hour: 0, minute: 0, second: 1)
         
-        //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
         underTest.state.filter { $0 == .stopped }
             .subscribe(onNext: { _ in
                 emitCount = emitCount + 1
@@ -249,7 +248,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.stop()  //start가 실행되지 않았으니 stop도 실행되지 않음.
         
         expect(underTest.state.value).to(equal(.stopped))
-        expect(emitCount).to(equal(1))//state로 합쳐지면서 초기 값이 없어져서 1번만 실행되는 게 맞음
+        expect(emitCount).to(equal(1))
     }
     
     func testCanReset() {
@@ -258,7 +257,6 @@ class CountdownTimerTests: XCTestCase {
         
         underTest.setTime(hour: 0, minute: 0, second: 1)
         
-        //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
         underTest.state.filter { $0 == .pending }
             .subscribe(onNext: { _ in //(emitCount + 1
                 emitCount = emitCount + 1
