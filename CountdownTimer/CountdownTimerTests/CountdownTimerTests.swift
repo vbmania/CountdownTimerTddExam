@@ -209,7 +209,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.start()
         
         expect(underTest.isStarted.value).to(beTrue())
-        expect(underTest.isStopped.value).to(beTrue())
+        expect(underTest.isStopped.value).to(beFalse())
     }
     
     func testCanStartWhenWasReset() {
@@ -244,7 +244,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.stop()  //start가 실행되지 않았으니 stop도 실행되지 않음.
         
         expect(underTest.isStopped.value).to(beTrue())
-        expect(emitCount).to(equal(2))
+        expect(emitCount).to(equal(3))
     }
     
     func testCanReset() {
