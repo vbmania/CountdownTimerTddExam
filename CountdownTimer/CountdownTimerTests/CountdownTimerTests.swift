@@ -42,6 +42,9 @@
 
 import XCTest
 import Nimble
+import RxSwift
+import RxCocoa
+
 @testable import CountdownTimer
 
 class CountdownTimer {
@@ -75,6 +78,8 @@ class CountdownTimer {
 }
 
 class CountdownTimerTests: XCTestCase {
+    
+    var disposeBag = DisposeBag()
     
     func testCanSetTime() {
         let underTest = CountdownTimer()
