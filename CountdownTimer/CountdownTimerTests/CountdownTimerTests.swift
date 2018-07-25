@@ -274,4 +274,11 @@ class CountdownTimerTests: XCTestCase {
         expect(emitCount).to(equal(2))
     }
     
+    func testCanDisplayTimeWhenSetTime() {
+        let underTest = CountdownTimer()
+        underTest.setTime(hour: 0, minute: 0, second: 1)
+        
+        expect(underTest.getTime()).to(equal("0:0:1"))
+    }
+    
 }
