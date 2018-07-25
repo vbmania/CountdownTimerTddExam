@@ -26,7 +26,7 @@
 // [v] reset (stop)
 // [v] setTime (init, reset)
 
-// [] setTime 하면 화면에 그 시간이 표시되어야 한다.
+// [v] setTime 하면 화면에 그 시간이 표시되어야 한다.
 
 // [] start하면 시간의 변화를 알 수 있어야 한다.
 // [] 시간은 역순으로 카운트 다운 되어야 한다.
@@ -293,7 +293,6 @@ class CountdownTimerTests: XCTestCase {
         underTest.setTime(hour: 0, minute: 0, second: 1)
         
         expect(result).to(equal("0:0:1"))
-        
     }
     
 }
