@@ -82,6 +82,10 @@ class CountdownTimer {
         guard state.value == .stopped else { return }
         state.accept(.pending)
     }
+    
+    func getTime() -> String {
+        return "0:0:1"
+    }
 }
 
 class CountdownTimerTests: XCTestCase {
