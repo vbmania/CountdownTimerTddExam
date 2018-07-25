@@ -59,6 +59,7 @@ class CountdownTimer {
     var second: Int = 0
     
     var state: BehaviorRelay<CountdownTimerState> = BehaviorRelay<CountdownTimerState>(value: .pending)
+    let timeChanged: PublishSubject<String> = PublishSubject<String>()
     
     func setTime(hour: Int, minute: Int, second: Int) {
         guard state.value == .pending else { return }
@@ -285,6 +286,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.timeChanged.subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
             result = time
         })
+        .disposed(by: disposeBag)
         
         expect(result).to(equal("0:0:1"))
         
