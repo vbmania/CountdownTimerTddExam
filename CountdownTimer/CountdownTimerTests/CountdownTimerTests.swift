@@ -281,8 +281,13 @@ class CountdownTimerTests: XCTestCase {
     func testCanDisplayTimeWhenSetTime() {
         let underTest = CountdownTimer()
         underTest.setTime(hour: 0, minute: 0, second: 1)
+        var result: String = ""
+        underTest.timeChanged.subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
+            result = time
+        })
         
-        expect(underTest.getTime()).to(equal("0:0:1"))
+        expect(result).to(equal("0:0:1"))
+        
     }
     
 }
