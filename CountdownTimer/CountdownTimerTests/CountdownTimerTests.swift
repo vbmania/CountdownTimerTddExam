@@ -59,7 +59,9 @@ class CountdownTimer {
     var second: Int = 0
     
     var state: BehaviorRelay<CountdownTimerState> = BehaviorRelay<CountdownTimerState>(value: .pending)
-    let timeChanged: PublishSubject<String> = PublishSubject<String>()
+    let timeChanged: PublishSubject<Int> = PublishSubject<Int>()
+    
+    let disposeBag = DisposeBag()
     
     func setTime(hour: Int, minute: Int, second: Int) {
         guard state.value == .pending else { return }
@@ -68,12 +70,17 @@ class CountdownTimer {
         self.minute = minute
         self.second = second
         
-        timeChanged.onNext("0:0:\(second)")
+        timeChanged.onNext(second)
     }
     
     func start() {
         guard hour > 0 || minute > 0 || second > 0 else { return }
         state.accept(.started)
+        
+        Observable<Int>
+            .interval(RxTimeInterval(1), scheduler: MainScheduler.instance)
+            .bind(to: timeChanged)
+            .disposed(by: disposeBag)
     }
     
     func stop() {
@@ -140,35 +147,35 @@ class CountdownTimerTests: XCTestCase {
         let expectedHour = 1
         let expectedMinute = 1
         let expectedSecond = 1
-
+        
         let changedHour = 3
         let changedMinute = 2
         let changedSecond = 2
-
+        
         underTest.setTime(hour: expectedHour, minute: expectedMinute, second: expectedSecond)
         underTest.start()
         underTest.setTime(hour: changedHour, minute: changedMinute, second: changedSecond)
-
+        
         expect(underTest.hour).to(equal(expectedHour))
         expect(underTest.minute).to(equal(expectedMinute))
         expect(underTest.second).to(equal(expectedSecond))
     }
-
+    
     func testCanNotChangeTimeWhenStopped() {
         let underTest = CountdownTimer()
         let expectedHour = 1
         let expectedMinute = 1
         let expectedSecond = 1
-
+        
         let changedHour = 3
         let changedMinute = 2
         let changedSecond = 2
-
+        
         underTest.setTime(hour: expectedHour, minute: expectedMinute, second: expectedSecond)
         underTest.start()
         underTest.stop()
         underTest.setTime(hour: changedHour, minute: changedMinute, second: changedSecond)
-
+        
         expect(underTest.hour).to(equal(expectedHour))
         expect(underTest.minute).to(equal(expectedMinute))
         expect(underTest.second).to(equal(expectedSecond))
@@ -281,18 +288,33 @@ class CountdownTimerTests: XCTestCase {
         expect(emitCount).to(equal(2))
     }
     
-    func testCanDisplayTimeWhenSetTime() {
-        let underTest = CountdownTimer()
-        var result: String = ""
-        underTest.timeChanged
-            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
-            result = time
-        })
-        .disposed(by: disposeBag)
-        
-        underTest.setTime(hour: 0, minute: 0, second: 1)
-        
-        expect(result).to(equal("0:0:1"))
-    }
+//    func testCanDisplayTimeWhenSetTime() {
+//        let underTest = CountdownTimer()
+//        var result: String = ""
+//        underTest.timeChanged
+//            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
+//                result = time
+//            })
+//            .disposed(by: disposeBag)
+//
+//        underTest.setTime(hour: 0, minute: 0, second: 1)
+//
+//        expect(result).to(equal("0:0:1"))
+//    }
     
+    func testCanObserveChangeTimeWhenStarted() {
+        let underTest = CountdownTimer()
+        var emitCount: Int = 0
+        
+        underTest.timeChanged
+            .subscribe(onNext: { _ in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
+                emitCount = emitCount + 1
+            })
+            .disposed(by: disposeBag)
+        
+        underTest.setTime(hour: 0, minute: 0, second: 5)
+        underTest.start()
+        
+        expect(emitCount).toEventually(equal(6), timeout: 6)
+    }
 }
