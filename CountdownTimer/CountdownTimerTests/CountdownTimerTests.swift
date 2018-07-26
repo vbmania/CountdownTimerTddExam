@@ -317,4 +317,21 @@ class CountdownTimerTests: XCTestCase {
         
         expect(emitCount).toEventually(equal(6), timeout: 6)
     }
+    
+    func testCanObserveCountdownTimeWhenStarted() {
+        let underTest = CountdownTimer()
+        var emitTimes: [Int] = [Int]()
+        let expectedTimes = [5, 4, 3, 2, 1, 0]
+        
+        underTest.timeChanged
+            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
+                emitTimes.append(time)
+            })
+            .disposed(by: disposeBag)
+        
+        underTest.setTime(hour: 0, minute: 0, second: 5)
+        underTest.start()
+        
+        expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6)
+    }
 }
