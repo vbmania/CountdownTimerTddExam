@@ -77,7 +77,7 @@ class CountdownTimer {
         guard hour > 0 || minute > 0 || second > 0 else { return }
         state.accept(.started)
         
-        let totalSeconds = hour * 3600 + minute * 60 + second
+        let totalSeconds = hour * 3600 + minute * 60 + second - 1 
         
         Observable<Int>
             .interval(RxTimeInterval(1), scheduler: MainScheduler.instance)
