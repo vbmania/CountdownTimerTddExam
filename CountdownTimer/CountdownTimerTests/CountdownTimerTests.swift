@@ -53,6 +53,7 @@ enum CountdownTimerState {
     case stopped
 }
 
+@objcMembers
 class CountdownTimer {
     var hour: Int = 0
     var minute: Int = 0
@@ -333,6 +334,24 @@ class CountdownTimerTests: XCTestCase {
             .disposed(by: disposeBag)
         
         underTest.setTime(hour: 0, minute: 0, second: 5)
+        underTest.start()
+        
+        expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6)
+    }
+    
+    func testCanStopCountTimeWhenStop() {
+        let underTest = CountdownTimer()
+        var emitTimes: [Int] = [Int]()
+        let expectedTimes = [5, 4, 3]
+        
+        underTest.timeChanged
+            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
+                emitTimes.append(time)
+            })
+            .disposed(by: disposeBag)
+        
+        underTest.setTime(hour: 0, minute: 0, second: 5)
+        self.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
         underTest.start()
         
         expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6)
