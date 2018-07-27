@@ -339,14 +339,23 @@ class CountdownTimerTests: XCTestCase {
         expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6)
     }
     
+    
+    //그렇다면 지금 상황에서 필요한 것
+    // 1. 충분히 기다려 줄 것
+    // 2. timeout이 결과에 영향을 미쳐선 안됨
     func testCanStopCountTimeWhenStop() {
         let underTest = CountdownTimer()
         var emitTimes: [Int] = [Int]()
         let expectedTimes = [5, 4, 3]
         
+        let expectation = XCTestExpectation(description: "Time Stop")
+        
         underTest.timeChanged
             .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
                 emitTimes.append(time)
+                if emitTimes.count >= expectedTimes.count {
+                    expect(emitTimes).to(equal(expectedTimes))
+                }
             })
             .disposed(by: disposeBag)
         
@@ -354,26 +363,28 @@ class CountdownTimerTests: XCTestCase {
         underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
         underTest.start()
         
-        expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
+        wait(for: [expectation], timeout: 6)
     }
     
-    func testCanStopCountTimeWhenStop_Verify_ChangeStopTime() {
-        let underTest = CountdownTimer()
-        var emitTimes: [Int] = [Int]()
-        let expectedTimes = [5, 4, 3]
-        
-        underTest.timeChanged
-            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
-                emitTimes.append(time)
-            })
-            .disposed(by: disposeBag)
-        
-        underTest.setTime(hour: 0, minute: 0, second: 5)
-        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 5)
-        underTest.start()
-        
-        expect(emitTimes).toEventuallyNot(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
-    }
+//    func testCanStopCountTimeWhenStop_Verify_ChangeStopTime() {
+//        let underTest = CountdownTimer()
+//        var emitTimes: [Int] = [Int]()
+//        let expectedTimes = [5, 4, 3]
+//
+//        underTest.timeChanged
+//            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
+//                emitTimes.append(time)
+//            })
+//            .disposed(by: disposeBag)
+//
+//        underTest.setTime(hour: 0, minute: 0, second: 5)
+//        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 5)
+//        underTest.start()
+//
+//        expect(emitTimes).toEventuallyNot(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
+//    }
+    
+    
     
 /*
      Nimble에 포함된 toEventually(... timeout:) 의 특성을 알게됨.
