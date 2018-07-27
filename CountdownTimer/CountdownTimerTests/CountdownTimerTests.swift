@@ -85,7 +85,9 @@ class CountdownTimer: NSObject {
         tick = Observable<Int>
             .interval(RxTimeInterval(1), scheduler: MainScheduler.instance)
             .map { totalSeconds - $0}
-            .bind(to: timeChanged)
+            .subscribe(onNext: { [weak self] (remain) in
+                self?.timeChanged.onNext(remain)
+            })
     }
     
     func stop() {
@@ -389,17 +391,21 @@ class CountdownTimerTests: XCTestCase {
         let expectedTimes = [5, 4, 3, 5]
         
         let expectation = XCTestExpectation(description: "Time Stop")
+        expectation.expectedFulfillmentCount = 1
         
         underTest.timeChanged
             .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
                 emitTimes.append(time)
+                print(emitTimes)
                 if emitTimes.count == expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
                     //여기서 fulfill 하면 아래 상황에 대한 체크가 불가능
+                    expectation.fulfill()
                 }
                 if emitTimes.count > expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
                     //여기서 fulfill 하면 위 쪽 구문 정상적으로 끝난 상태에 타임아웃 발생
+                    expectation.fulfill()
                 }
             })
             .disposed(by: disposeBag)
