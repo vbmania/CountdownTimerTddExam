@@ -110,9 +110,10 @@ class CountdownTimer: NSObject {
 class CountdownTimerTests: XCTestCase {
     
     var disposeBag = DisposeBag()
+    var interval = 0.1
     
     func testCanSetTime() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         let expectedHour = 0
         let expectedMinute = 0
         let expectedSecond = 0
@@ -121,7 +122,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanSetTime_1_1_1() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         let expectedHour = 1
         let expectedMinute = 1
         let expectedSecond = 1
@@ -138,7 +139,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanChangeTime() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         let expectedHour = 1
         let expectedMinute = 1
         let expectedSecond = 1
@@ -152,7 +153,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanNotChangeTimeWhenStarted() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         let expectedHour = 1
         let expectedMinute = 1
         let expectedSecond = 1
@@ -171,7 +172,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanNotChangeTimeWhenStopped() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         let expectedHour = 1
         let expectedMinute = 1
         let expectedSecond = 1
@@ -191,7 +192,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanNotChangeTimeWhenWasReset() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         let expectedHour = 3
         let expectedMinute = 2
         let expectedSecond = 2
@@ -208,7 +209,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanStart() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         var emitCount: Int = 0
         
         //Rx에 있는 BehaviorRelay로 바꿔서 상태변화를 확인할 수 있도록 변경한다.
@@ -228,7 +229,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanStartWhenStopped() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         underTest.setTime(hour: 0, minute: 0, second: 1)
         
         expect(underTest.state.value).to(equal(.pending))
@@ -240,7 +241,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanStartWhenWasReset() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         underTest.setTime(hour: 0, minute: 0, second: 1)
         
         expect(underTest.state.value).to(equal(.pending))
@@ -252,7 +253,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanStopWhenStarted() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         var emitCount: Int = 0
         
         underTest.setTime(hour: 0, minute: 0, second: 1)
@@ -274,7 +275,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanReset() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         var emitCount: Int = 0
         
         underTest.setTime(hour: 0, minute: 0, second: 1)
@@ -298,7 +299,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
 //    func testCanDisplayTimeWhenSetTime() {
-//        let underTest = CountdownTimer()
+//        let underTest = CountdownTimer(interval: interval)
 //        var result: String = ""
 //        underTest.timeChanged
 //            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
@@ -312,7 +313,7 @@ class CountdownTimerTests: XCTestCase {
 //    }
     
     func testCanObserveChangeTimeWhenStarted() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         var emitCount: Int = 0
         
         underTest.timeChanged
@@ -328,7 +329,7 @@ class CountdownTimerTests: XCTestCase {
     }
     
     func testCanObserveCountdownTimeWhenStarted() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         var emitTimes: [Int] = [Int]()
         let expectedTimes = [5, 4, 3, 2, 1, 0]
         
@@ -355,7 +356,7 @@ class CountdownTimerTests: XCTestCase {
      2. timeout이 결과에 영향을 미쳐선 안됨
      */
     func testCanStopCountTimeWhenStop() {
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         var assertCount = 0
         var emitTimes: [Int] = [Int]()
         let expectedTimes = [5, 4, 3]
@@ -391,7 +392,7 @@ class CountdownTimerTests: XCTestCase {
     
     func testCanObserveTimerReset() {
         
-        let underTest = CountdownTimer()
+        let underTest = CountdownTimer(interval: interval)
         var emitTimes: [Int] = [Int]()
         let expectedTimes = [5, 4, 3, 5]
         var assertCount = 0
