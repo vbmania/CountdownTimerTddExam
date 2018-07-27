@@ -354,6 +354,24 @@ class CountdownTimerTests: XCTestCase {
         self.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
         underTest.start()
         
-        expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6)
+        expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
+    }
+    
+    func testCanStopCountTimeWhenStop_Verify_ChangeStopTime() {
+        let underTest = CountdownTimer()
+        var emitTimes: [Int] = [Int]()
+        let expectedTimes = [5, 4, 3]
+        
+        underTest.timeChanged
+            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
+                emitTimes.append(time)
+            })
+            .disposed(by: disposeBag)
+        
+        underTest.setTime(hour: 0, minute: 0, second: 5)
+        self.perform(#selector(underTest.stop), with: nil, afterDelay: 5)
+        underTest.start()
+        
+        expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
     }
 }
