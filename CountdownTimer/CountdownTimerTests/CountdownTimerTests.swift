@@ -363,9 +363,11 @@ class CountdownTimerTests: XCTestCase {
                 emitTimes.append(time)
                 if emitTimes.count == expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
+                    //여기서 fulfill 하면 아래 상황에 대한 체크가 불가능
                 }
                 if emitTimes.count > expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
+                    //여기서 fulfill 하면 위 쪽 구문 정상적으로 끝난 상태에 타임아웃 발생
                 }
             })
             .disposed(by: disposeBag)
