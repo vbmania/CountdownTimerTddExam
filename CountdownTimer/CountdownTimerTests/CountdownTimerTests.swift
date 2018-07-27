@@ -117,6 +117,10 @@ class CountdownTimerTests: XCTestCase {
     var disposeBag = DisposeBag()
     var interval = 0.1
     
+    func ti(_ second: Double) -> Double {
+        return second * interval
+    }
+    
     func testCanSetTime() {
         let underTest = CountdownTimer(interval: interval)
         let expectedHour = 0
@@ -330,7 +334,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.setTime(hour: 0, minute: 0, second: 5)
         underTest.start()
         
-        expect(emitCount).toEventually(equal(6), timeout: 6)
+        expect(emitCount).toEventually(equal(6), timeout: ti(6))
     }
     
     func testCanObserveCountdownTimeWhenStarted() {
@@ -347,7 +351,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.setTime(hour: 0, minute: 0, second: 5)
         underTest.start()
         
-        expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6)
+        expect(emitTimes).toEventually(equal(expectedTimes), timeout: ti(6))
     }
     
     
@@ -384,12 +388,12 @@ class CountdownTimerTests: XCTestCase {
             .disposed(by: disposeBag)
         
         underTest.setTime(hour: 0, minute: 0, second: 5)
-        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 2.5)
+        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: ti(2.5))
         underTest.start()
         
         
-        promise.perform(#selector(promise.fulfill), with: nil, afterDelay: 5.5)
-        waitForExpectations(timeout: 6) { (error) in
+        promise.perform(#selector(promise.fulfill), with: nil, afterDelay: ti(5.5))
+        waitForExpectations(timeout: ti(6)) { (error) in
             expect(assertCount).to(beGreaterThan(0))
         }
     }
@@ -421,13 +425,13 @@ class CountdownTimerTests: XCTestCase {
             .disposed(by: disposeBag)
         
         underTest.setTime(hour: 0, minute: 0, second: 5)
-        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 2.5)
-        underTest.perform(#selector(underTest.reset), with: nil, afterDelay: 2.7)
+        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: ti(2.5))
+        underTest.perform(#selector(underTest.reset), with: nil, afterDelay: ti(2.7))
         
         underTest.start()
         
-        promise.perform(#selector(promise.fulfill), with: nil, afterDelay: 5.5)
-        waitForExpectations(timeout: 6) { (error) in
+        promise.perform(#selector(promise.fulfill), with: nil, afterDelay: ti(5.5))
+        waitForExpectations(timeout: ti(6)) { (error) in
             expect(assertCount).to(beGreaterThan(0))
         }
         
