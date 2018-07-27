@@ -63,8 +63,13 @@ class CountdownTimer: NSObject {
     let timeChanged: PublishSubject<Int> = PublishSubject<Int>()
     
     let disposeBag = DisposeBag()
+    let interval: Double
     
     private var tick: Disposable?
+    
+    init(interval: Double) {
+        self.interval = interval
+    }
     
     func setTime(hour: Int, minute: Int, second: Int) {
         guard state.value == .pending else { return }
@@ -83,7 +88,7 @@ class CountdownTimer: NSObject {
         let totalSeconds = hour * 3600 + minute * 60 + second - 1 
         
         tick = Observable<Int>
-            .interval(RxTimeInterval(1), scheduler: MainScheduler.instance)
+            .interval(RxTimeInterval(interval), scheduler: MainScheduler.instance)
             .map { totalSeconds - $0}
             .subscribe(onNext: { [weak self] (remain) in
                 self?.timeChanged.onNext(remain)
