@@ -97,6 +97,7 @@ class CountdownTimer: NSObject {
     func reset() {
         guard state.value == .stopped else { return }
         state.accept(.pending)
+        timeChanged.onNext(second)
     }
     
     func getTime() -> String {
@@ -388,9 +389,6 @@ class CountdownTimerTests: XCTestCase {
         let expectedTimes = [5, 4, 3, 5]
         
         let expectation = XCTestExpectation(description: "Time Stop")
-        expectation.expectedFulfillmentCount = 1
-        
-        //emit이 3번밖에 일어나지 않은 상황에서는 무조건 성공..
         
         underTest.timeChanged
             .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
@@ -408,7 +406,7 @@ class CountdownTimerTests: XCTestCase {
         
         underTest.setTime(hour: 0, minute: 0, second: 5)
         underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
-        underTest.perform(#selector(underTest.reset), with: nil, afterDelay: 3.1)
+        underTest.perform(#selector(underTest.reset), with: nil, afterDelay: 4)
         
         underTest.start()
         
