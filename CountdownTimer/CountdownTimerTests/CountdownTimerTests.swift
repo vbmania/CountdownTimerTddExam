@@ -374,4 +374,10 @@ class CountdownTimerTests: XCTestCase {
         
         expect(emitTimes).toEventuallyNot(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
     }
+    
+/*
+     Nimble에 포함된 toEventually(... timeout:) 의 특성을 알게됨.
+     timeout이 될때까지 기다려서 expect에 들어오는 값이 ...에 들어오는 값과 일치하는 순간 성공을 반환
+     timeout이 될때까지 기다려도 일치하지 않을 때만 실패임
+*/
 }
