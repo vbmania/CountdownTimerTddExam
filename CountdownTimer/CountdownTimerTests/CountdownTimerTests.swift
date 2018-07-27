@@ -356,31 +356,36 @@ class CountdownTimerTests: XCTestCase {
      */
     func testCanStopCountTimeWhenStop() {
         let underTest = CountdownTimer()
+        var assertCount = 0
         var emitTimes: [Int] = [Int]()
         let expectedTimes = [5, 4, 3]
         
-        let expectation = XCTestExpectation(description: "Time Stop")
+        let promise = expectation(description: "Wait Reset")
         
         underTest.timeChanged
             .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
                 emitTimes.append(time)
                 if emitTimes.count == expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
-                    //여기서 fulfill 하면 아래 상황에 대한 체크가 불가능
+                    assertCount = assertCount + 1
                 }
                 if emitTimes.count > expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
-                    //여기서 fulfill 하면 위 쪽 구문 정상적으로 끝난 상태에 타임아웃 발생
+                    assertCount = assertCount + 1
+                    promise.fulfill()
                 }
             })
             .disposed(by: disposeBag)
         
         underTest.setTime(hour: 0, minute: 0, second: 5)
-        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
+        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 2.5)
         underTest.start()
         
-        expectation.perform(#selector(expectation.fulfill), with: nil, afterDelay: 5.5)
-        wait(for: [expectation], timeout: 6)
+        
+        promise.perform(#selector(promise.fulfill), with: nil, afterDelay: 5.5)
+        waitForExpectations(timeout: 6) { (error) in
+            expect(assertCount).to(beGreaterThan(0))
+        }
     }
     
     
@@ -389,34 +394,36 @@ class CountdownTimerTests: XCTestCase {
         let underTest = CountdownTimer()
         var emitTimes: [Int] = [Int]()
         let expectedTimes = [5, 4, 3, 5]
-        
-        let expectation = XCTestExpectation(description: "Time Stop")
-        expectation.expectedFulfillmentCount = 1
+        var assertCount = 0
+        let promise = expectation(description: "Wait Reset")
         
         underTest.timeChanged
             .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
                 emitTimes.append(time)
-                print(emitTimes)
+                
                 if emitTimes.count == expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
-                    //여기서 fulfill 하면 아래 상황에 대한 체크가 불가능
-                    expectation.fulfill()
+                    assertCount = assertCount + 1
                 }
                 if emitTimes.count > expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
                     //여기서 fulfill 하면 위 쪽 구문 정상적으로 끝난 상태에 타임아웃 발생
-                    expectation.fulfill()
+                    assertCount = assertCount + 1
+                    promise.fulfill()
                 }
             })
             .disposed(by: disposeBag)
         
         underTest.setTime(hour: 0, minute: 0, second: 5)
-        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
-        underTest.perform(#selector(underTest.reset), with: nil, afterDelay: 4)
+        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 2.5)
+        underTest.perform(#selector(underTest.reset), with: nil, afterDelay: 2.7)
         
         underTest.start()
         
-        wait(for: [expectation], timeout: 6)
+        promise.perform(#selector(promise.fulfill), with: nil, afterDelay: 5.5)
+        waitForExpectations(timeout: 6) { (error) in
+            expect(assertCount).to(beGreaterThan(0))
+        }
         
     }
 }
