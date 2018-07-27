@@ -353,7 +353,10 @@ class CountdownTimerTests: XCTestCase {
         underTest.timeChanged
             .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
                 emitTimes.append(time)
-                if emitTimes.count >= expectedTimes.count {
+                if emitTimes.count == expectedTimes.count {
+                    expect(emitTimes).to(equal(expectedTimes))
+                }
+                if emitTimes.count > expectedTimes.count {
                     expect(emitTimes).to(equal(expectedTimes))
                 }
             })
@@ -363,6 +366,7 @@ class CountdownTimerTests: XCTestCase {
         underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
         underTest.start()
         
+        expectation.perform(#selector(expectation.fulfill), with: nil, afterDelay: 5.5)
         wait(for: [expectation], timeout: 6)
     }
     
