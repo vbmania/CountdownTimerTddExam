@@ -372,6 +372,6 @@ class CountdownTimerTests: XCTestCase {
         underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 5)
         underTest.start()
         
-        expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
+        expect(emitTimes).toEventuallyNot(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
     }
 }
