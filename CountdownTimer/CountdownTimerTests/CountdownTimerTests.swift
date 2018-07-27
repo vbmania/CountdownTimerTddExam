@@ -54,7 +54,7 @@ enum CountdownTimerState {
 }
 
 @objcMembers
-class CountdownTimer {
+class CountdownTimer: NSObject {
     var hour: Int = 0
     var minute: Int = 0
     var second: Int = 0
@@ -351,7 +351,7 @@ class CountdownTimerTests: XCTestCase {
             .disposed(by: disposeBag)
         
         underTest.setTime(hour: 0, minute: 0, second: 5)
-        self.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
+        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 3)
         underTest.start()
         
         expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
@@ -369,7 +369,7 @@ class CountdownTimerTests: XCTestCase {
             .disposed(by: disposeBag)
         
         underTest.setTime(hour: 0, minute: 0, second: 5)
-        self.perform(#selector(underTest.stop), with: nil, afterDelay: 5)
+        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: 5)
         underTest.start()
         
         expect(emitTimes).toEventually(equal(expectedTimes), timeout: 6) //stop에서 시간을 실제로 멈추는 일을 아무것도 안했는데 멈췄다고??
