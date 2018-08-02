@@ -370,7 +370,7 @@ class CountdownTimerTests: XCTestCase {
         var emitTimes: [Int] = [Int]()
         let expectedTimes = [5, 4, 3]
         
-        let promise = expectation(description: "Wait Reset")
+        let promise = expectation(description: "Wait Stop")
         
         underTest.timeChanged
             .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
@@ -434,6 +434,42 @@ class CountdownTimerTests: XCTestCase {
         waitForExpectations(timeout: ti(6)) { (error) in
             expect(assertCount).to(beGreaterThan(0))
         }
+    }
+    
+    
+    func testCanReStartCountTimeWhenStop() {
+        let underTest = CountdownTimer(interval: interval)
+        var assertCount = 0
+        var emitTimes: [Int] = [Int]()
+        let expectedTimes = [5, 4, 3, 2, 1, 0]
         
+        let promise = expectation(description: "Wait Restart")
+        
+        underTest.timeChanged
+            .subscribe(onNext: { time in //setTime하면 화면에 표시되어야 한다는 건 변화를 감지해야 한다는 의미..
+                emitTimes.append(time)
+                if emitTimes.count == expectedTimes.count {
+                    expect(emitTimes).to(equal(expectedTimes))
+                    assertCount = assertCount + 1
+                }
+                if emitTimes.count > expectedTimes.count {
+                    expect(emitTimes).to(equal(expectedTimes))
+                    assertCount = assertCount + 1
+                    promise.fulfill()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        underTest.setTime(hour: 0, minute: 0, second: 5)
+        underTest.perform(#selector(underTest.stop), with: nil, afterDelay: ti(2.5))
+        underTest.perform(#selector(underTest.start), with: nil, afterDelay: ti(2.7))
+        underTest.start()
+        
+        
+        promise.perform(#selector(promise.fulfill), with: nil, afterDelay: ti(9.5))
+        waitForExpectations(timeout: ti(10)) { (error) in
+            expect(emitTimes).to(equal(expectedTimes))
+            expect(assertCount).to(beGreaterThan(0))
+        }
     }
 }
