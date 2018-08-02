@@ -66,9 +66,17 @@ class CountdownTimer: NSObject {
     let interval: Double
     
     private var tick: Disposable?
+    private var totalSeconds: Int = 0
+    private var remainSeconds: Int = 0
+    
     
     init(interval: Double) {
         self.interval = interval
+        super.init()
+        timeChanged.subscribe(onNext: { [weak self] (remain) in
+            self?.remainSeconds = remain
+        })
+        .disposed(by: disposeBag)
     }
     
     func setTime(hour: Int, minute: Int, second: Int) {
@@ -77,19 +85,20 @@ class CountdownTimer: NSObject {
         self.hour = hour
         self.minute = minute
         self.second = second
-        
-        timeChanged.onNext(second)
+        totalSeconds = hour * 3600 + minute * 60 + second
+        timeChanged.onNext(totalSeconds)
+        remainSeconds = totalSeconds - 1
     }
     
     func start() {
         guard hour > 0 || minute > 0 || second > 0 else { return }
         state.accept(.started)
         
-        let totalSeconds = hour * 3600 + minute * 60 + second - 1 
+        let remainSeconds = self.remainSeconds
         
         tick = Observable<Int>
             .interval(RxTimeInterval(interval), scheduler: MainScheduler.instance)
-            .map { totalSeconds - $0}
+            .map { remainSeconds - $0}
             .subscribe(onNext: { [weak self] (remain) in
                 self?.timeChanged.onNext(remain)
             })
