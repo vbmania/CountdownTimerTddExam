@@ -114,14 +114,16 @@ class CountdownTimer: NSObject {
 
 fileprivate var intervalForTest = 0.1
 
+fileprivate func ti(_ second: Double) -> Double {
+    return second * intervalForTest
+}
+
 class CountdownTimerTests: XCTestCase {
     
     var disposeBag = DisposeBag()
     
     
-    func ti(_ second: Double) -> Double {
-        return second * intervalForTest
-    }
+    
     
     func testCanSetTime() {
         let underTest = CountdownTimer(interval: intervalForTest)
