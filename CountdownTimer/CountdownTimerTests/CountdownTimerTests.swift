@@ -112,10 +112,12 @@ class CountdownTimer: NSObject {
     }
 }
 
+fileprivate var intervalForTest = 0.1
+
 class CountdownTimerTests: XCTestCase {
     
     var disposeBag = DisposeBag()
-    var intervalForTest = 0.1
+    
     
     func ti(_ second: Double) -> Double {
         return second * intervalForTest
