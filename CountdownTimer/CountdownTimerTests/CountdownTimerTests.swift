@@ -98,6 +98,7 @@ class CountdownTimer: NSObject {
         
         tick = Observable<Int>
             .interval(RxTimeInterval(interval), scheduler: MainScheduler.instance)
+            .take(remainSeconds)
             .map { remainSeconds - $0}
             .subscribe(onNext: { [weak self] (remain) in
                 self?.timeChanged.onNext(remain)
