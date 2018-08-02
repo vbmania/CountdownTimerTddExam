@@ -94,11 +94,11 @@ class CountdownTimer: NSObject {
         guard hour > 0 || minute > 0 || second > 0 else { return }
         state.accept(.started)
         
-        let remainSeconds = self.remainSeconds - 1
+        let remainSeconds = self.remainSeconds
         
         tick = Observable<Int>
             .interval(RxTimeInterval(interval), scheduler: MainScheduler.instance)
-            .take(remainSeconds)
+            .take(remainSeconds + 1)
             .map { remainSeconds - $0}
             .subscribe(onNext: { [weak self] (remain) in
                 self?.timeChanged.onNext(remain)
@@ -114,7 +114,8 @@ class CountdownTimer: NSObject {
     func reset() {
         guard state.value == .stopped else { return }
         state.accept(.pending)
-        timeChanged.onNext(second)
+        timeChanged.onNext(totalSeconds)
+        remainSeconds = totalSeconds - 1
     }
     
     func getTime() -> String {
@@ -459,7 +460,7 @@ class CountdownTimerTestsForAsyncTest: XCTestCase {
         let underTest = CountdownTimer(interval: intervalForTest)
         var assertCount = 0
         var emitTimes: [Int] = [Int]()
-        let expectedTimes = [5, 4, 3, 2, 1, 0]
+        let expectedTimes = [5, 4, 3, 3, 2, 1, 0]
         
         let promise = expectation(description: "Wait Restart")
         
