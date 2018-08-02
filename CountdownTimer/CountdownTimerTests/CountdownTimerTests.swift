@@ -94,7 +94,7 @@ class CountdownTimer: NSObject {
         guard hour > 0 || minute > 0 || second > 0 else { return }
         state.accept(.started)
         
-        let remainSeconds = self.remainSeconds
+        let remainSeconds = self.remainSeconds - 1
         
         tick = Observable<Int>
             .interval(RxTimeInterval(interval), scheduler: MainScheduler.instance)
